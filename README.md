@@ -1,8 +1,9 @@
 # LowBall
-Facebook Marketplace Bot that Automatically Lowballs People
+Facebook Marketplace Bot that Automatically Lowballs People 
 
 ## What do you need to use?
 A Facebook Account
+Chromium to use Pyppetteer
 
 ## How do I use it?
 1a. Make sure you're logged into your Facebook account since it's needed for the script to run
