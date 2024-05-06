@@ -1,6 +1,6 @@
 import asyncio, time
 from pyppeteer import launch
-from utils import CHROMEDRIVER, FB_USER, FB_PASS
+from utils import CHROMEDRIVER
 
 async def launch_browser(): # Launches Pyppetteer Browser
     browser = await launch(executablePath = CHROMEDRIVER, headless = False)
@@ -55,10 +55,11 @@ async def algorithm(page): # Main algorithm for combing listings
     print("PASSWORD:" + FB_PASS)
 
     await login(page, FB_USER, FB_PASS)
-    #if # If clause when a CAPTCHA page is reached, do asyncio.sleep(60) to manually solve
+    #if # If clause when a CAPTCHA page is reached, do asyncio.sleep(60) to manually solve CAPTCHA
+
     await asyncio.sleep(1000) # Temporary for testing
 
-async def main(): # Wrapper for main calls
+async def main(): # Wrapper for algorithm calls
         page, browser = await launch_browser()
         await algorithm(page)
         await browser.close()  
