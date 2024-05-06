@@ -24,23 +24,28 @@
     OPTION B IS PROBABLY THE BEST FOR A MVP TO ENSURE IT WORKS CORRECTLY
 
     Option B Algorithm (Include a try-except clause this would go hard here):
+        1. Input a keyword
+        2. if keyword is blank ("") don't search for anything below (3-5) and continue
+        3. Find the search box for inputting the keyword
+        4. click the search box
+        5. input they keyword and press enter
 
-        1. Find the marketplace listings using Pyppetteer's tools. Should store all listings as a list/array (temporary).
+        6. Find the marketplace listings using Pyppetteer's tools. Should store all listings as a list/array (temporary).
 
-        2. for listing in listings...
-            3. Click on that listing (Since it's a dynamic website we don't have to worry much).
-            4. Find the message box at the bottom righthand corner of the screen.
-                4a. If the message box does not exist, than we have already messaged this person, move onto the next listing (secondary dupe prevention; Sorta redundant). 
-            5. Find the price of the item and convert the string to an integer and store it (temporary).
-            6. Find the X-out button in the top right corner of the screen.
-            7. Click the message box.
-            8. Input a pre-determined, funny message, which also includes the price minus a randomized variable amount. We can store these messages in a list/array.
-            9. Press enter (avoids us having to find the send message box below the message box).
-            10. Press X-out button.
-            11. Find mini textbox X for messaging who we previously messaged (this automatically pops up after we send the first message to a seller).
-            12. Press X on that mini textbox (this should avoid any missed-click issues).
-            13. Move onto the next listing in listings (continue the loop).
+        7. for listing in listings...
+            8. Click on that listing (Since it's a dynamic website we don't have to worry much).
+            9. Find the message box at the bottom righthand corner of the screen.
+                9a. If the message box does not exist, than we have already messaged this person, move onto the next listing (secondary dupe prevention; Sorta redundant). 
+            10. Find the price of the item and convert the string to an integer and store it (temporary).
+            11. Find the X-out button in the top right corner of the screen.
+            12. Click the message box.
+            13. Input a pre-determined, funny message, which also includes the price minus a randomized variable amount. We can store these messages in a list/array.
+            14. Press enter (avoids us having to find the send message box below the message box).
+            15. Press X-out button.
+            16. Find mini textbox X for messaging who we previously messaged (this automatically pops up after we send the first message to a seller).
+            17. Press X on that mini textbox (this should avoid any missed-click issues).
+            18. Move onto the next listing in listings (continue the loop).
 
-        14. Remove all listings from listings list/array after the for loop is complete.
-        15. Scroll down to load more listings and repeat the entire process.
+        19. Remove all listings from listings list/array after the for loop is complete.
+        20. Scroll down to load more listings and repeat the entire process.
 
