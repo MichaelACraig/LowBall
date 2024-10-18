@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
+from datetime import datetime
 import pyautogui, time, os, json
 
 # Chrome Webdriver Initalizer
@@ -86,28 +87,45 @@ def scrape_listings(driver):
   listing_data = []
   for listing in listings:
     data = {}
-    link_layer = listing.find('a', class_='x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g x1sur9pj xkrqix3 x1lku1pv')
-    if link_layer and 'href' in link_layer.attrs:
-      href = link_layer['href']
-      link = f'https://www.facebook.com{href}'
-      data['link'] = link
+
+    try:
+      link_layer = listing.find('a', class_='x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g x1sur9pj xkrqix3 x1lku1pv')
+      if link_layer and 'href' in link_layer.attrs:
+        href = link_layer['href']
+        link = f'https://www.facebook.com{href}'
+        data['link'] = link
+    except:
+      data['link'] = ''
     
-    price = soup.find('span', class_='x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x676frb x1lkfr7t x1lbecb7 x1s688f xzsf02u')
-    price_text = price.text
-    data['price'] = price_text
+    try: # Issue with this one for slashed out prices due to discounts
+      price = listing.find('span', class_='x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x676frb x1lkfr7t x1lbecb7 x1s688f xzsf02u')
+      price_text = price.text
+      data['price'] = price_text
+    except:
+      data['price'] = ''
 
-    layer = soup.find('div', class_='xyqdw3p x4uap5 xjkvuk6 xkhd6sd')
-    name = layer.find('span', class_='x1lliihq x6ikm8r x10wlt62 x1n2onr6')
-    name_text = name.text
-    data['name'] = name_text
+    try:
+      layer = listing.find('div', class_='xyqdw3p x4uap5 xjkvuk6 xkhd6sd')
+      name = layer.find('span', class_='x1lliihq x6ikm8r x10wlt62 x1n2onr6')
+      name_text = name.text
+      data['name'] = name_text
+    except:
+      data['name'] = ''
 
-    location = soup.find('span', class_='x1lliihq x6ikm8r x10wlt62 x1n2onr6 xlyipyv xuxw1ft x1j85h84')
-    location_text = location.text
-    data['location'] = location_text
+    try:
+      location = listing.find('span', class_='x1lliihq x6ikm8r x10wlt62 x1n2onr6 xlyipyv xuxw1ft x1j85h84')
+      location_text = location.text
+      data['location'] = location_text
+    except:
+      data['location'] = ''
 
+    if data.get('link', '') == '' and data.get('price', '') == '' and data.get('name', '') == '' and data.get('location', '') == '':
+      continue
+    
     listing_data.append(data)
 
-    return listing_data
+
+  return listing_data
     
 # Go to specific location (FUNCTION CANNOT BE HEADLESS IN ORDER TO RUN)
 #WIP
@@ -141,6 +159,13 @@ def define_location(driver, zipcode=None, radius=None, cookies=None):
 
   return driver
 
+# Converts data to a json
+def to_json(data):
+  timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+  filename = f'{timestamp}_listings.json'
+  with open(filename, 'w') as json_file:
+      json.dump(data, json_file, indent=4)
+
 # Applies all filters that user has put parameters in for
 def apply_filters(driver):
   return driver
@@ -150,6 +175,7 @@ def main():
   driver, cookies = input_user_credentials(driver)
   driver = search_item(driver, "Fortnite Battle Pass")
   data = scrape_listings(driver)
+  to_json(data)
   time.sleep(10)
   driver.quit()
 
