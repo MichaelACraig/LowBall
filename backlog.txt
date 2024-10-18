@@ -1,5 +1,12 @@
 - Go through functionality and add WebDriverWait to some features to increase speed and also reduce failed attempts
-  - Change retrieve_user_credentials to use WebDriverWait(), move back into input_user_credentials
 - Fix headless browsing; White box popping up instead of nothing
   - Fix define_location to work in headless mode. pyautogui usage makes it so this isn't possible
+
+Add Filtering features
 - Complete define_location
+- After searching for an object, change filters for optimized search
+  - Add Date listed
+    - Add capability to consistently pull information to get the earliest listings
+  - Add min/max cost filter
+  - Add delivery method
+- Add built-in title filtering to ensure best results on every query
