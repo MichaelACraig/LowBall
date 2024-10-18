@@ -1,4 +1,5 @@
 - Go through functionality and add WebDriverWait to some features to increase speed and also reduce failed attempts
   - Change retrieve_user_credentials to use WebDriverWait(), move back into input_user_credentials
 - Fix headless browsing; White box popping up instead of nothing
+  - Fix define_location to work in headless mode. pyautogui usage makes it so this isn't possible
 - Complete define_location
