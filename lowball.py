@@ -24,19 +24,29 @@ def connect(url='https://www.facebook.com/marketplace'):
   
   return driver
 
+# Helper for input_user_credentials to ennsure input fields are found.
+def retrieve_input_fields(driver):
+   try:
+    user_field = driver.find_element(By.XPATH, '//*[@id=":r1:"]')
+    pass_field = driver.find_element(By.XPATH, '//*[@id=":r4:"]')
+    login = driver.find_element(By.XPATH, '//*[@id="login_popup_cta_form"]/div/div[5]')
+
+    return user_field, pass_field, login
+   except:
+      return None, None, None
+   
 # Input login credentials to Facebook Marketplace; Technically don't need to do this
+# Simple secondary check. Shouldn't be an issue unless you have bad internet
 def input_user_credentials(driver):
   load_dotenv()
   username = os.getenv('USERNAME')
   password = os.getenv('PASSWORD')
   
-  user_field = driver.find_element(By.XPATH, '//*[@id=":r1:"]')
-  pass_field = driver.find_element(By.XPATH, '//*[@id=":r4:"]')
-  login = driver.find_element(By.XPATH, '//*[@id="login_popup_cta_form"]/div/div[5]')
-
-  # Gotta swap this out soon, but good temp for if user is already logged in
+  user_field, pass_field, login = retrieve_input_fields(driver)
   if user_field is None:
-    return driver
+    retrieve_input_fields(driver)
+  
+  # Need some sort of clause for if the username and password are not present
   
   user_field.click()
   user_field.send_keys(username)
@@ -74,21 +84,23 @@ def search_item(driver, item, cookies=None):
   return driver
 
 # Go to specific location
-def define_location(driver, cookies=None):
-  screen_width, screen_height = pyautogui.size()
+def define_location(driver, radius=None, city=None, state=None, zipcode=None, cookies=None):
   # Random coordinates on webpage to remove Notifications blocker
+  screen_width, screen_height = pyautogui.size()
   x = 627
   y = 250
-
   pyautogui.moveTo(x, y)
   pyautogui.click()
-
+  
+  time.sleep(1)
   location_change = driver.find_element(By.XPATH, '//*[@id="seo_filters"]/div[1]/div[1]/div/span')
   location_change.click()
 
+  location_search = driver.find_element(By.XPATH, '''//*[@id=":r19:"]''')
+  location_search.click()
   return driver
 
-# Fully encompassing function that adjusts all features for item search 
+# Applies all filters that user has put parameters in for
 def apply_filters(driver):
   return driver
 
