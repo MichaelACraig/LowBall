@@ -10,16 +10,12 @@ import pyautogui, time, os, json
 
 # Chrome Webdriver Initalizer
 def connect(url='https://www.facebook.com/marketplace'):
-  
-  # I don't know why, but headless mode opens a white box when it shouldn't be opening anything
-  # Fix later!
-  chrome_options = Options()
-  #chrome_options.add_argument("--headless")
-  #chrome_options.add_argument("--disable-gpu")
-  #chrome_options.add_argument("--no-sandbox")
-  chrome_options.add_argument("--window-size=1920x1080")
 
+  chrome_options = Options() # Add headless mode later on
+  chrome_options.add_argument("--window-size=1920x1080")
+  
   driver = webdriver.Chrome(options=chrome_options)
+
   driver.get(url)
   
   return driver
@@ -56,12 +52,10 @@ def input_user_credentials(driver):
   login.click()
   time.sleep(10)
 
-  cookies = driver.get_cookies()
-
-  return driver, cookies
+  return driver
 
 # Searches an for an item given it finds a search bar
-def search_item(driver, item, cookies=None):
+def search_item(driver, item):
   search_url = 'https://www.facebook.com/marketplace/category/search/?query='
   item_split = item.split(" ")
   
@@ -122,12 +116,11 @@ def scrape_listings(driver):
     
     listing_data.append(data)
 
-
   return listing_data
     
 # Go to specific location (FUNCTION CANNOT BE HEADLESS IN ORDER TO RUN)
 #WIP
-def define_location(driver, zipcode=None, radius=None, cookies=None):
+def define_location(driver, zipcode=None, radius=None):
   # Random coordinates on webpage to remove Notifications blocker
   screen_width, screen_height = pyautogui.size()
   x = 627
@@ -170,11 +163,11 @@ def apply_filters(driver):
 
 def main():
   driver = connect()
-  driver, cookies = input_user_credentials(driver)
-  driver = search_item(driver, "apartment for sublease")
+  driver = input_user_credentials(driver)
+  driver = search_item(driver, "Summer house rent")
   data = scrape_listings(driver)
   to_json(data)
-  time.sleep(10)
+  time.sleep(5)
   driver.quit()
 
 main()
