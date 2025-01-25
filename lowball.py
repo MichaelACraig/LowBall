@@ -29,9 +29,9 @@ def connect(url='https://www.facebook.com/marketplace'):
 # Helper for input_user_credentials to ennsure input fields are found.
 def retrieve_input_fields(driver):
    try:
-    user_field = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id=":r1:"]')))
-    pass_field = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id=":r4:"]')))
-    login = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="login_popup_cta_form"]/div/div[5]')))
+    user_field = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id=":r10:"]')))
+    pass_field = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id=":r13:"]')))
+    login = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="login_popup_cta_form"]/div/div[5]/div/div')))
 
     return user_field, pass_field, login
    except:
@@ -56,6 +56,7 @@ def input_user_credentials(driver):
   pass_field.send_keys(password)
 
   login.click()
+  time.sleep(10)
 
   cookies = driver.get_cookies()
 
