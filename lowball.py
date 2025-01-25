@@ -4,9 +4,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
 from datetime import datetime
 import pyautogui, time, os, json
 
@@ -69,7 +67,7 @@ def search_item(driver, item, cookies=None):
   
   # URL Edit for search
   if len(item_split) == 1:
-      search_url += i
+      search_url += item_split[0]
   else:
     for i in item_split:
         if i == item_split[0]:
@@ -173,7 +171,7 @@ def apply_filters(driver):
 def main():
   driver = connect()
   driver, cookies = input_user_credentials(driver)
-  driver = search_item(driver, "Fortnite Battle Pass")
+  driver = search_item(driver, "apartment for sublease")
   data = scrape_listings(driver)
   to_json(data)
   time.sleep(10)
